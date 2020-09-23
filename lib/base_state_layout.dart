@@ -14,11 +14,9 @@ class BaseStateLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (stateLayout == StateLayout.showErrorContent) {
-      //hideLoadingView();
       return Container();
     } else if (stateLayout == StateLayout.showEmpty) {
-      //showLoadingView();
-      return child;
+      return Container();
     }
 
     return child;

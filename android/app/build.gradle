@@ -52,6 +52,24 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "sourceSet"
+    productFlavors {
+        develop {
+            dimension "sourceSet"
+            // Todo: Fix applicationId here
+            applicationIdSuffix '.develop'
+        }
+
+        staging {
+            dimension "sourceSet"
+            applicationIdSuffix '.staging'
+        }
+
+        product {
+            dimension "sourceSet"
+        }
+    }
 }
 
 flutter {
