@@ -4,6 +4,10 @@ import 'package:getx_demo/bindings/sum_binding.dart';
 import 'package:getx_demo/main.dart';
 import 'package:getx_demo/sum_page.dart';
 
+import 'bindings/app_bindings.dart';
+import 'controllers/movie_controller.dart';
+import 'presentation/ui/movie_page.dart';
+
 class SecondPage extends StatelessWidget {
 
   @override
@@ -17,6 +21,12 @@ class SecondPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              RaisedButton(
+                child: Text("list movies"),
+                onPressed: () {
+                  Get.to(MoviePage(), binding: AppBindings());
+                },
+              ),
               RaisedButton(
                 child: Text("back"),
                 onPressed: () {

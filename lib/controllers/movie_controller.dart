@@ -1,12 +1,16 @@
 
 import 'package:get/get.dart';
-import 'package:getx_demo/data/services/base_service.dart';
-import 'package:getx_demo/data/services/end_point_app.dart';
-import 'package:getx_demo/models/movie.dart';
+import 'package:getx_demo/data/services/home_service.dart';
 
-class MovieController extends GetxController {
+import '../data/helper/resource.dart';
+import '../models/movie.dart';
+import 'sum_controller.dart';
 
-  final BaseService _baseService = BaseService();
+class MovieController extends BaseController {
+
+  final HomeService _homeService = HomeService();
+
+  RxList<Movie> listMovie = List<Movie>().obs;
 
   @override
   void onReady() {
@@ -15,8 +19,15 @@ class MovieController extends GetxController {
   }
 
   Future getAPI() async {
-    final response = await _baseService.sendRequest(EndPointApp.nowPlayingMovie);
-    final BaseArrayResponse arrayResponse = BaseArrayResponse<Movie>().parseJson(response.data, Movie());
-    print("======> arrayResponse: ${arrayResponse.data.length}");
+    showLoadingView();
+    final response = await _homeService.getNowPlayingMovies();
+
+    hideLoadingView();
+    if (response.status == Status.SUCCESS) {
+      print("data: ${response.data.results.length}");
+      listMovie.value = response.data.results;
+    } else {
+      print("error: ${response.error.message}");
+    }
   }
 }

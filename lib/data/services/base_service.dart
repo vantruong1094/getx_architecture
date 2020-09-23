@@ -6,6 +6,19 @@ import 'package:getx_demo/configs/app_configs.dart';
 import 'package:getx_demo/data/services/end_point_app.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import '../helper/app_exception.dart';
+import '../helper/app_exception.dart';
+import '../helper/app_exception.dart';
+import '../helper/app_exception.dart';
+import '../helper/app_exception.dart';
+import '../helper/resource.dart';
+import '../helper/resource.dart';
+import '../helper/resource.dart';
+import '../helper/resource.dart';
+import '../helper/resource.dart';
+import '../helper/resource.dart';
+import '../helper/resource.dart';
+
 class BaseService {
   Dio _dio;
 
@@ -48,16 +61,23 @@ class BaseService {
     return dio;
   }
 
-  Future<Response> sendRequest(EndPointApp endPoint, {Map<String, dynamic> params}) async {
+  Future<Resource<Response>> sendRequest(EndPointApp endPoint,
+      {Map<String, dynamic> params}) async {
     if (endPoint.method == MethodRequest.GET) {
-      return await get(endPoint.path, params);
+      try {
+        final response = await get(endPoint.path, params);
+        if (response.statusCode >= 200 && response.statusCode < 299) {
+          return Resource.success(response);
+        } else {
+          print("error response: ${response}");
+          return Resource.error(NoNetworkException());
+        }
+      } catch (e) {
+        print("error exception: ${e}");
+        return Resource.error(handleError(e));
+      }
     }
-  }
-
-  Future<Response<T>> sendBaseRequest<T>(EndPointApp endPoint, {Map<String, dynamic> params}) async {
-    if (endPoint.method == MethodRequest.GET) {
-      return await get(endPoint.path, params);
-    }
+    return Resource.empty();
   }
 
   ///used for calling Get Request
@@ -76,13 +96,13 @@ class BaseService {
   }
 }
 
-class BaseArrayResponse<T> {
-  List<T> data;
+class ArrayDataResponse<T> {
+  List<T> results;
 
-  BaseArrayResponse({this.data});
+  ArrayDataResponse({this.results});
 
-  BaseArrayResponse parseJson(Map<String, dynamic> json, BaseObject target) {
-    return BaseArrayResponse(data: (json["results"] as List).map((e) => target.fromJson(e)));
+  ArrayDataResponse<T> parseJson(Map<String, dynamic> json, BaseObject<T> target) {
+    return ArrayDataResponse(results: (json["results"] as List).map((e) => target.fromJson(e)).toList());
   }
 }
 

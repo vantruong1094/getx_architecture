@@ -5,6 +5,8 @@ import 'package:getx_demo/configs/app_configs.dart';
 import 'package:getx_demo/presentation/ui/movie_page.dart';
 import 'package:getx_demo/second_page.dart';
 
+import 'second_page.dart';
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -16,8 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MoviePage(),
-      initialBinding: AppBindings(),
+      home: SecondPage(),
     );
   }
 }

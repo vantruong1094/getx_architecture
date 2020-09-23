@@ -19,10 +19,3 @@ extension EndPointAppExt on EndPointApp {
     }
   }
 }
-
-class HomeService {
-
-  void getNowPlayingMovies(Map<String, dynamic> param) {
-
-  }
-}

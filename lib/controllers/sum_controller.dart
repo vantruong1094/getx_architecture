@@ -88,3 +88,27 @@ class SumController extends GetxController with WidgetsBindingObserver {
     }
   }
 }
+
+class BaseController extends GetxController {
+  Rx<StateLayout> stateLayout = StateLayout.showContent.obs;
+  void showLoadingView() {
+    if (Get.isDialogOpen) {
+      return;
+    }
+    Get.dialog(
+      Center(
+        child: Container(
+          width: 50,
+          height: 50,
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
+
+  void hideLoadingView() {
+    if (Get.isDialogOpen) {
+      Get.back();
+    }
+  }
+}

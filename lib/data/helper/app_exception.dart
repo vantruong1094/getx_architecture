@@ -1,7 +1,10 @@
 
 import 'package:dio/dio.dart';
+import 'package:getx_demo/data/helper/error_response.dart';
 import 'package:getx_demo/utils/constants.dart';
 import 'package:getx_demo/extentions/string_ext.dart';
+
+import '../../utils/constants.dart';
 
 class AppException implements Exception {
   final String title;
@@ -18,7 +21,12 @@ class NoNetworkException extends AppException {
 
 class NoHandleErrorException extends AppException {
   NoHandleErrorException()
-      : super(Constants.ERROR_TITLE, Constants.ERROR_MESSAGE_NETWORK);
+      : super(Constants.ERROR_TITLE, "Constants.ERROR_MESSAGE_NETWORK");
+}
+
+class UnauthorizedErrorException extends AppException {
+  UnauthorizedErrorException() : super(Constants.ERROR_TITLE, "401 Unauthorized");
+
 }
 
 AppException handleError(dynamic e) {
@@ -26,7 +34,7 @@ AppException handleError(dynamic e) {
   final DioError error = e as DioError;
 
   if (error.isUnauthorized()) {
-    return NoHandleErrorException();
+    return UnauthorizedErrorException();
   } else if (error.isMaintenance()) {
     return NoHandleErrorException();
   }
@@ -48,17 +56,17 @@ extension DioErrorExt on DioError {
     if (isNetworkError() || response.data is! Map<String, dynamic>) {
       return NoNetworkException();
     }
-//
-//    try {
-//      final ErrorDetailResponse errResponse = ErrorDetailResponse.fromJson(response.data);
-//      final String title = errResponse?.errorCode.toString();
-//      final String message = errResponse?.errorMessage;
-//      if (message.isNullOrEmpty()) {
-//        return NoNetworkException();
-//      }
-//      return AppException(title, message);
-//    } catch (e) {
-//      return NoNetworkException();
-//    }
+
+    try {
+      final ErrorResponse errResponse = ErrorResponse.fromJson(response.data);
+      final String title = errResponse?.statusCode.toString();
+      final String message = errResponse?.message;
+      if (message.isNullOrEmpty()) {
+        return NoNetworkException();
+      }
+      return AppException(title, message);
+    } catch (e) {
+      return NoNetworkException();
+    }
   }
 }
