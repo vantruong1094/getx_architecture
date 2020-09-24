@@ -33,6 +33,7 @@ dependencies:
   json_serializable: ^3.3.0
   generic_json_annotation:
   retrofit: ^1.3.4
+  cached_network_image: ^2.3.2+1
 
   # Dio
   dio: ^3.0.9

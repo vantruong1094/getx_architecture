@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_demo/bindings/sum_binding.dart';
-import 'package:getx_demo/main.dart';
-import 'package:getx_demo/sum_page.dart';
-
 import 'bindings/app_bindings.dart';
-import 'controllers/movie_controller.dart';
 import 'presentation/ui/movie_page.dart';
 
 class SecondPage extends StatelessWidget {
@@ -31,12 +26,6 @@ class SecondPage extends StatelessWidget {
                 child: Text("back"),
                 onPressed: () {
                   Get.back();
-                },
-              ),
-              RaisedButton(
-                child: Text("Go Sum Page"),
-                onPressed: () {
-                  Get.to(SumPage(), binding: SumBinding());
                 },
               ),
               RaisedButton(

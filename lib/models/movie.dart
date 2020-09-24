@@ -1,4 +1,5 @@
 
+import 'package:getx_demo/data/response/base_response.dart';
 import 'package:getx_demo/data/services/base_service.dart';
 
 class Movie extends BaseObject<Movie> {

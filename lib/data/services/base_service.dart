@@ -3,20 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:dio_flutter_transformer/dio_flutter_transformer.dart';
 import 'package:get/get.dart';
 import 'package:getx_demo/configs/app_configs.dart';
+import 'package:getx_demo/data/helper/network_checker.dart';
 import 'package:getx_demo/data/services/end_point_app.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../helper/app_exception.dart';
-import '../helper/app_exception.dart';
-import '../helper/app_exception.dart';
-import '../helper/app_exception.dart';
-import '../helper/app_exception.dart';
-import '../helper/resource.dart';
-import '../helper/resource.dart';
-import '../helper/resource.dart';
-import '../helper/resource.dart';
-import '../helper/resource.dart';
-import '../helper/resource.dart';
 import '../helper/resource.dart';
 
 class BaseService {
@@ -63,6 +54,10 @@ class BaseService {
 
   Future<Resource<Response>> sendRequest(EndPointApp endPoint,
       {Map<String, dynamic> params}) async {
+    bool isConnected = await NetworkChecker.check();
+    if (!isConnected) {
+      return Resource.error(NoNetworkException());
+    }
     if (endPoint.method == MethodRequest.GET) {
       try {
         final response = await get(endPoint.path, params);
@@ -94,18 +89,4 @@ class BaseService {
         data: params, options: Options(responseType: ResponseType.json));
     return response;
   }
-}
-
-class ArrayDataResponse<T> {
-  List<T> results;
-
-  ArrayDataResponse({this.results});
-
-  ArrayDataResponse<T> parseJson(Map<String, dynamic> json, BaseObject<T> target) {
-    return ArrayDataResponse(results: (json["results"] as List).map((e) => target.fromJson(e)).toList());
-  }
-}
-
-abstract class BaseObject<T> {
-  T fromJson(json);
 }
